@@ -1,1 +1,1 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/FILE"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/falisc/RobloxScripts/main/Rainbow%20Friends%20(Open%20Source)"))()
