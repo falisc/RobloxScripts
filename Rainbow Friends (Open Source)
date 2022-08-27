@@ -1,0 +1,130 @@
+local ESP = loadstring(game:HttpGet("https://kiriot22.com/releases/ESP.lua"))()
+ESP:Toggle(false)
+ESP.Tracers = false 
+ESP.Boxes = false 
+ESP.Names = false
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "Rainbow Friends", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+local Home = Window:MakeTab({
+	Name = "Home",
+	Icon = "rbxassetid://10662496159",
+	PremiumOnly = false
+})
+local Game = Window:MakeTab({
+	Name = "Game",
+	Icon = "rbxassetid://10662493887",
+	PremiumOnly = false
+})
+local Player = Window:MakeTab({
+	Name = "Player",
+	Icon = "rbxassetid://10662492502",
+	PremiumOnly = false
+})
+local Esp = Window:MakeTab({
+	Name = "Esp",
+	Icon = "rbxassetid://10662493189",
+	PremiumOnly = false
+})
+local Settings = Window:MakeTab({
+	Name = "Settings",
+	Icon = "rbxassetid://10662495375",
+	PremiumOnly = false
+})
+local Section = Home:AddSection({
+	Name = "Home"
+})
+Home:AddLabel("Made by fal#0001")
+local Section = Game:AddSection({
+	Name = "Game"
+})
+Game:AddButton({
+	Name = "Get All Items",
+	Callback = function()
+        for i,v in pairs(game.workspace.Map_C1.ItemSpawns:GetDescendants()) do
+            if v.name == "ItemSpawn" then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+            wait(0.1)
+            end
+        end
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(188.50491333007812, 31.84999656677246, 283.9635925292969)
+    end
+})
+Game:AddButton({
+	Name = "Place All Items",
+	Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(371.54364013671875, 45.604129791259766, 132.65687561035156)
+  	end    
+})
+Game:AddButton({
+	Name = "Fullbright",
+	Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/06iG6YkU", true))()
+  	end    
+})
+local Section = Player:AddSection({
+	Name = "Player"
+})
+Player:AddSlider({
+	Name = "Walkspeed",
+	Min = 16,
+	Max = 200,
+	Default = 16,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "speed",
+	Callback = function(Value)
+		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+	end    
+})
+Player:AddSlider({
+	Name = "Fov",
+	Min = 70,
+	Max = 120,
+	Default = 70,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "fov",
+	Callback = function(Value)
+		game:GetService'Workspace'.Camera.FieldOfView = Value
+	end    
+})
+local Section = Esp:AddSection({
+	Name = "Esp"
+})
+Esp:AddToggle({
+	Name = "Esp",
+	Default = false,
+	Callback = function(Value)
+		ESP:Toggle(Value)
+	end    
+})
+Esp:AddToggle({
+	Name = "Tracers",
+	Default = false,
+	Callback = function(Value)
+		ESP.Tracers = Value
+	end    
+})
+Esp:AddToggle({
+	Name = "Boxes",
+	Default = false,
+	Callback = function(Value)
+		ESP.Boxes = Value
+	end    
+})
+Esp:AddToggle({
+	Name = "Names",
+	Default = false,
+	Callback = function(Value)
+		ESP.Names = Value
+	end    
+})
+local Section = Settings:AddSection({
+	Name = "Settings"
+})
+Settings:AddButton({
+	Name = "Delete Gui",
+	Callback = function()
+        game.CoreGui.Orion:Destroy()
+  	end    
+})
