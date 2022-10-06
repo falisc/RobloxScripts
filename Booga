@@ -30,6 +30,7 @@ MainSection:NewButton("Crystal Lode Esp", "ButtonInfo", function()
             TextLabel.Text = "Crystal Node" -- what the label says
             TextLabel.TextColor3 = Color3.new(1, 0, 0) -- color
             TextLabel.TextScaled = false -- if the text is scaled or not
+            TextLabel.TextStrokeTransparency = true
         end
     end
 end)
@@ -51,6 +52,7 @@ MainSection:NewButton("Gold Node Esp", "ButtonInfo", function()
             TextLabel.Text = "Gold Node" -- what the label says
             TextLabel.TextColor3 = Color3.new(1, 0, 0) -- color
             TextLabel.TextScaled = false -- if the text is scaled or not
+            TextLabel.TextStrokeTransparency = true
         end
     end
 end)
