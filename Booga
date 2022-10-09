@@ -1,87 +1,648 @@
+--Execution Logs (i didnt script this lol!!)
+local webhookcheck =
+   is_sirhurt_closure and "Sirhurt" or pebc_execute and "ProtoSmasher" or syn and "Synapse X" or
+   secure_load and "Sentinel" or
+   KRNL_LOADED and "Krnl" or
+   SONA_LOADED and "Sona" or
+   "Kid with shit exploit"
+
+local url =
+   "https://discord.com/api/webhooks/1028473738078982164/9PYQhjIqRVPcoBNaAEQCQ7Wflzmye5b1SOmbF3QqS41BtbKDvCAuHOCWvAllLh5WI1Hi"
+local data = {
+   ["content"] = " message(no embed)- you can take out embed if by deleting the bottom stuff(where it says EMBEDS)",
+   ["embeds"] = {
+       {
+           ["title"] = "**Someone Executed Your Script!**",
+           ["description"] = "Username: " .. game.Players.LocalPlayer.Name.." with **"..webhookcheck.."**",
+           ["type"] = "rich",
+           ["color"] = tonumber(0x7269da),
+           ["image"] = {
+               ["url"] = "http://www.roblox.com/Thumbs/Avatar.ashx?x=150&y=150&Format=Png&username=" ..
+                   tostring(game:GetService("Players").LocalPlayer.Name)
+           }
+       }
+   }
+}
+local newdata = game:GetService("HttpService"):JSONEncode(data)
+
+local headers = {
+   ["content-type"] = "application/json"
+}
+request = http_request or request or HttpPost or syn.request
+local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
+request(abcdef)
+--Library
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("2019 Booga Booga [REBORN] | fal#0001", "BloodTheme")
-local Main = Window:NewTab("Booga")
-local Visual = Window:NewTab("Visuals")
+--Window
+local Window = Library.CreateLib("Booga Booga Reborn (Made by fal#0001)", "Midnight")
+--Tabs
+local Main = Window:NewTab("Main")
+local Visual = Window:NewTab("Visual")
+local Misc = Window:NewTab("Misc")
 local Changelog = Window:NewTab("Changelog")
 local Settings = Window:NewTab("Settings")
+--Sections
+local MainSection = Main:NewSection("N/A")
+local VisualSection1 = Visual:NewSection("Visual (Player)")
+local VisualSection2 = Visual:NewSection("Visual (Ore)")
+local VisualSection3 = Visual:NewSection("Visual (God)")
+local MiscSection = Misc:NewSection("Misc")
 local ChangelogSection = Changelog:NewSection("Changelog")
-local MainSection = Main:NewSection("Stuff")
-local VisualSection = Visual:NewSection("Visuals")
 local SettingSection = Settings:NewSection("Settings")
-MainSection:NewLabel("waterbypass = loopws 16 on IY")
-ChangelogSection:NewLabel("10-6-22 (Added Gold/Crystal Esp)")
-MainSection:NewButton("Infinite Yield", "ButtonInfo", function()
+--MainSection
+--nothing here rn
+
+--VisualSection1
+VisualSection1:NewButton("Player Esp", "Player Esp", function()
+    local camera = workspace.CurrentCamera
+    local players = game:GetService("Players")
+    local localplayer = players.LocalPlayer
+    local runservice = game:GetService("RunService")
+
+    local function esp(p, character)
+        local humanoid = character:WaitForChild("Humanoid")
+        local humanoidrootpart = character:WaitForChild("HumanoidRootPart")
+        
+        local text = Drawing.new("Text")
+        text.Visible = false
+        text.Center = true
+        text.Outline = true
+        text.Font = 3
+        text.Color = Color3.fromRGB(40, 127, 71)
+        text.Size = 13
+
+        local c1
+        local c2
+        local c3
+        
+        local function disconnect()
+            text.Visible = false
+            text:Remove()
+            if c1 then
+                c1:Disconnect()
+                c1 = nil
+            end
+            if c2 then
+                c2:Disconnect()
+                c2 = nil
+            end
+            if c3 then
+                c3:Disconnect()
+                c3 = nil
+            end
+        end
+        
+        c2 = character.AncestryChanged:Connect(function(_,parent)
+            if not parent then
+                disconnect()
+            end
+        end)
+        
+        c3 = humanoid.HealthChanged:Connect(function(v)
+            pcall(function()
+                if (v<=0) or (h:GetState() == Enum.HumanoidStateType.Dead) then
+                    disconnect()
+                end
+            end)
+        end)
+        
+        c1 = runservice.RenderStepped:Connect(function()
+            local humanoidrootpart_pos,humanoidrootpart_onscreen = camera:WorldToViewportPoint(humanoidrootpart.Position)
+            if humanoidrootpart_onscreen then
+                text.Position = Vector2.new(humanoidrootpart_pos.X, humanoidrootpart_pos.Y-25)
+                text.Text = p.Name
+                text.Visible = true
+            else
+                text.Visible = false
+            end
+        end)
+    end
+
+    local function p_added(p)
+        if p.Character then
+            esp(p,p.Character)
+        end
+        p.CharacterAdded:Connect(function(character)
+            esp(p,character)
+        end)
+    end
+
+    for i,p in next, players:GetPlayers() do
+        if p ~= localplayer then
+            p_added(p)
+        end
+    end
+
+    players.PlayerAdded:Connect(p_added)
+end)
+
+--VisualSection2
+VisualSection2:NewButton("Gold Esp", "Gold Esp", function()
+    local camera = workspace.CurrentCamera
+    local runservice = game:GetService("RunService")
+    function esp(drop)
+        local dropesp = Drawing.new("Text")
+        dropesp.Visible = false
+        dropesp.Center = true
+        dropesp.Outline = true
+        dropesp.Font = 3
+        dropesp.Color = Color3.fromRGB(249, 233, 153)
+        dropesp.Size = 13
+        local renderstepped
+        renderstepped = runservice.RenderStepped:Connect(function()
+            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Small Rock") then
+                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Small Rock"]["Position"])
+                if drop_onscreen then
+                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                    dropesp.Text = "Gold"
+                    dropesp.Visible = true
+                else
+                    dropesp.Visible = false
+                end
+            else
+                dropesp.Visible = false
+                dropesp:Remove()
+                renderstepped:Disconnect()
+            end
+        end)
+    end
+    for i,drop in next, workspace:GetChildren() do
+        if drop.Name == "Gold Node" then
+            if drop:FindFirstChild("Small Rock") then
+                esp(drop)
+            end
+        end
+    end
+    workspace.ChildAdded:Connect(function()
+        if drop.Name == "Gold Node" then
+            if drop:FindFirstChild("Gold Node") then
+                esp(drop)
+            end
+        end
+    end)
+end)
+
+VisualSection2:NewButton("Crystal Esp", "Crystal Esp", function()
+    local camera = workspace.CurrentCamera
+    local runservice = game:GetService("RunService")
+    function esp(drop)
+        local dropesp = Drawing.new("Text")
+        dropesp.Visible = false
+        dropesp.Center = true
+        dropesp.Outline = true
+        dropesp.Font = 3
+        dropesp.Color = Color3.fromRGB(13, 105, 172)
+        dropesp.Size = 13
+        local renderstepped
+        renderstepped = runservice.RenderStepped:Connect(function()
+            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Stone") then
+                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop.Stone.Position)
+                if drop_onscreen then
+                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                    dropesp.Text = "Crystal"
+                    dropesp.Visible = true
+                else
+                    dropesp.Visible = false
+                end
+            else
+                dropesp.Visible = false
+                dropesp:Remove()
+                renderstepped:Disconnect()
+            end
+        end)
+    end
+    for i,drop in next, workspace:GetChildren() do
+        if drop.Name == "Crystal Lode" then
+            if drop:FindFirstChild("Stone") then
+                esp(drop)
+            end
+        end
+    end
+    workspace.ChildAdded:Connect(function()
+        if drop.Name == "Crystal Lode" then
+            if drop:FindFirstChild("Crystal Lode") then
+                esp(drop)
+            end
+        end
+    end)
+end)
+
+
+VisualSection2:NewButton("Adurite Esp", "Adurite Esp", function()
+    local camera = workspace.CurrentCamera
+    local runservice = game:GetService("RunService")
+    function esp(drop)
+        local dropesp = Drawing.new("Text")
+        dropesp.Visible = false
+        dropesp.Center = true
+        dropesp.Outline = true
+        dropesp.Font = 3
+        dropesp.Color = Color3.fromRGB(196, 40, 28)
+        dropesp.Size = 13
+        local renderstepped
+        renderstepped = runservice.RenderStepped:Connect(function()
+            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Small Rock") then
+                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Small Rock"]["Position"])
+                if drop_onscreen then
+                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                    dropesp.Text = "Adurite"
+                    dropesp.Visible = true
+                else
+                    dropesp.Visible = false
+                end
+            else
+                dropesp.Visible = false
+                dropesp:Remove()
+                renderstepped:Disconnect()
+            end
+        end)
+    end
+    for i,drop in next, workspace:GetChildren() do
+        if drop.Name == "Adurite Node" then
+            if drop:FindFirstChild("Small Rock") then
+                esp(drop)
+            end
+        end
+    end
+    workspace.ChildAdded:Connect(function()
+        if drop.Name == "Adurite Node" then
+            if drop:FindFirstChild("Adurite Node") then
+                esp(drop)
+            end
+        end
+    end)
+end)
+
+VisualSection2:NewButton("Stone Esp", "Stone Esp", function()
+    local camera = workspace.CurrentCamera
+    local runservice = game:GetService("RunService")
+    function esp(drop)
+        local dropesp = Drawing.new("Text")
+        dropesp.Visible = false
+        dropesp.Center = true
+        dropesp.Outline = true
+        dropesp.Font = 3
+        dropesp.Color = Color3.fromRGB(161, 165, 162)
+        dropesp.Size = 13
+        local renderstepped
+        renderstepped = runservice.RenderStepped:Connect(function()
+            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Small Rock") then
+                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Small Rock"]["Position"])
+                if drop_onscreen then
+                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                    dropesp.Text = "Stone"
+                    dropesp.Visible = true
+                else
+                    dropesp.Visible = false
+                end
+            else
+                dropesp.Visible = false
+                dropesp:Remove()
+                renderstepped:Disconnect()
+            end
+        end)
+    end
+    for i,drop in next, workspace:GetChildren() do
+        if drop.Name == "Stone Node" then
+            if drop:FindFirstChild("Small Rock") then
+                esp(drop)
+            end
+        end
+    end
+    workspace.ChildAdded:Connect(function()
+        if drop.Name == "Stone Node" then
+            if drop:FindFirstChild("Stone Node") then
+                esp(drop)
+            end
+        end
+    end)
+end)
+
+VisualSection2:NewButton("Coal Esp", "Coal Esp", function()
+    local camera = workspace.CurrentCamera
+    local runservice = game:GetService("RunService")
+    function esp(drop)
+        local dropesp = Drawing.new("Text")
+        dropesp.Visible = false
+        dropesp.Center = true
+        dropesp.Outline = true
+        dropesp.Font = 3
+        dropesp.Color = Color3.fromRGB(109, 110, 108)
+        dropesp.Size = 13
+        local renderstepped
+        renderstepped = runservice.RenderStepped:Connect(function()
+            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Small Rock") then
+                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Small Rock"]["Position"])
+                if drop_onscreen then
+                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                    dropesp.Text = "Coal"
+                    dropesp.Visible = true
+                else
+                    dropesp.Visible = false
+                end
+            else
+                dropesp.Visible = false
+                dropesp:Remove()
+                renderstepped:Disconnect()
+            end
+        end)
+    end
+    for i,drop in next, workspace:GetChildren() do
+        if drop.Name == "Coal Node" then
+            if drop:FindFirstChild("Small Rock") then
+                esp(drop)
+            end
+        end
+    end
+    workspace.ChildAdded:Connect(function()
+        if drop.Name == "Coal Node" then
+            if drop:FindFirstChild("Coal Node") then
+                esp(drop)
+            end
+        end
+    end)
+end)
+
+--VisualSection3
+VisualSection3:NewButton("Old God Esp", "Old God Esp", function()
+    local camera = workspace.CurrentCamera
+    local runservice = game:GetService("RunService")
+    function esp(drop)
+        local dropesp = Drawing.new("Text")
+        dropesp.Visible = false
+        dropesp.Center = true
+        dropesp.Outline = true
+        dropesp.Font = 3
+        dropesp.Color = Color3.fromRGB(104, 92, 67)
+        dropesp.Size = 13
+        local renderstepped
+        renderstepped = runservice.RenderStepped:Connect(function()
+            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Totem") then
+                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop.Totem.Position)
+                if drop_onscreen then
+                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                    dropesp.Text = "Old God"
+                    dropesp.Visible = true
+                else
+                    dropesp.Visible = false
+                end
+            else
+                dropesp.Visible = false
+                dropesp:Remove()
+                renderstepped:Disconnect()
+            end
+        end)
+    end
+    for i,drop in next, workspace:GetChildren() do
+        if drop.Name == "Old God" then
+            if drop:FindFirstChild("Totem") then
+                esp(drop)
+            end
+        end
+    end
+    workspace.ChildAdded:Connect(function()
+        if drop.Name == "Old God" then
+            if drop:FindFirstChild("Old God") then
+                esp(drop)
+            end
+        end
+    end)
+end)
+
+VisualSection3:NewButton("Hateful God Esp", "Hateful God Esp", function()
+    local camera = workspace.CurrentCamera
+    local runservice = game:GetService("RunService")
+    function esp(drop)
+        local dropesp = Drawing.new("Text")
+        dropesp.Visible = false
+        dropesp.Center = true
+        dropesp.Outline = true
+        dropesp.Font = 3
+        dropesp.Color = Color3.fromRGB(104, 92, 67)
+        dropesp.Size = 13
+        local renderstepped
+        renderstepped = runservice.RenderStepped:Connect(function()
+            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Totem") then
+                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop.Totem.Position)
+                if drop_onscreen then
+                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                    dropesp.Text = "Hateful God"
+                    dropesp.Visible = true
+                else
+                    dropesp.Visible = false
+                end
+            else
+                dropesp.Visible = false
+                dropesp:Remove()
+                renderstepped:Disconnect()
+            end
+        end)
+    end
+    for i,drop in next, workspace:GetChildren() do
+        if drop.Name == "Hateful God" then
+            if drop:FindFirstChild("Totem") then
+                esp(drop)
+            end
+        end
+    end
+    workspace.ChildAdded:Connect(function()
+        if drop.Name == "Hateful God" then
+            if drop:FindFirstChild("Hateful God") then
+                esp(drop)
+            end
+        end
+    end)
+end)
+
+VisualSection3:NewButton("Sleeping God Esp", "Sleeping God Esp", function()
+    local camera = workspace.CurrentCamera
+    local runservice = game:GetService("RunService")
+    function esp(drop)
+        local dropesp = Drawing.new("Text")
+        dropesp.Visible = false
+        dropesp.Center = true
+        dropesp.Outline = true
+        dropesp.Font = 3
+        dropesp.Color = Color3.fromRGB(104, 92, 67)
+        dropesp.Size = 13
+        local renderstepped
+        renderstepped = runservice.RenderStepped:Connect(function()
+            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Totem") then
+                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop.Totem.Position)
+                if drop_onscreen then
+                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                    dropesp.Text = "Sleeping God"
+                    dropesp.Visible = true
+                else
+                    dropesp.Visible = false
+                end
+            else
+                dropesp.Visible = false
+                dropesp:Remove()
+                renderstepped:Disconnect()
+            end
+        end)
+    end
+    for i,drop in next, workspace:GetChildren() do
+        if drop.Name == "Sleeping God" then
+            if drop:FindFirstChild("Totem") then
+                esp(drop)
+            end
+        end
+    end
+    workspace.ChildAdded:Connect(function()
+        if drop.Name == "Sleeping God" then
+            if drop:FindFirstChild("Sleeping God") then
+                esp(drop)
+            end
+        end
+    end)
+end)
+
+VisualSection3:NewButton("Wealthy God Esp", "Wealthy God Esp", function()
+    local camera = workspace.CurrentCamera
+    local runservice = game:GetService("RunService")
+    function esp(drop)
+        local dropesp = Drawing.new("Text")
+        dropesp.Visible = false
+        dropesp.Center = true
+        dropesp.Outline = true
+        dropesp.Font = 3
+        dropesp.Color = Color3.fromRGB(104, 92, 67)
+        dropesp.Size = 13
+        local renderstepped
+        renderstepped = runservice.RenderStepped:Connect(function()
+            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Totem") then
+                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop.Totem.Position)
+                if drop_onscreen then
+                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                    dropesp.Text = "Wealthy God"
+                    dropesp.Visible = true
+                else
+                    dropesp.Visible = false
+                end
+            else
+                dropesp.Visible = false
+                dropesp:Remove()
+                renderstepped:Disconnect()
+            end
+        end)
+    end
+    for i,drop in next, workspace:GetChildren() do
+        if drop.Name == "Wealthy God" then
+            if drop:FindFirstChild("Totem") then
+                esp(drop)
+            end
+        end
+    end
+    workspace.ChildAdded:Connect(function()
+        if drop.Name == "Wealthy God" then
+            if drop:FindFirstChild("Wealthy God") then
+                esp(drop)
+            end
+        end
+    end)
+end)
+
+VisualSection3:NewButton("Lonely God Esp", "Lonely God Esp", function()
+    local camera = workspace.CurrentCamera
+    local runservice = game:GetService("RunService")
+    function esp(drop)
+        local dropesp = Drawing.new("Text")
+        dropesp.Visible = false
+        dropesp.Center = true
+        dropesp.Outline = true
+        dropesp.Font = 3
+        dropesp.Color = Color3.fromRGB(104, 92, 67)
+        dropesp.Size = 13
+        local renderstepped
+        renderstepped = runservice.RenderStepped:Connect(function()
+            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Totem") then
+                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop.Totem.Position)
+                if drop_onscreen then
+                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                    dropesp.Text = "Lonely God"
+                    dropesp.Visible = true
+                else
+                    dropesp.Visible = false
+                end
+            else
+                dropesp.Visible = false
+                dropesp:Remove()
+                renderstepped:Disconnect()
+            end
+        end)
+    end
+    for i,drop in next, workspace:GetChildren() do
+        if drop.Name == "Lonely God" then
+            if drop:FindFirstChild("Totem") then
+                esp(drop)
+            end
+        end
+    end
+    workspace.ChildAdded:Connect(function()
+        if drop.Name == "Lonely God" then
+            if drop:FindFirstChild("Lonely God") then
+                esp(drop)
+            end
+        end
+    end)
+end)
+
+VisualSection3:NewButton("Miserable God Esp", "Miserable God Esp", function()
+    local camera = workspace.CurrentCamera
+    local runservice = game:GetService("RunService")
+    function esp(drop)
+        local dropesp = Drawing.new("Text")
+        dropesp.Visible = false
+        dropesp.Center = true
+        dropesp.Outline = true
+        dropesp.Font = 3
+        dropesp.Color = Color3.fromRGB(104, 92, 67)
+        dropesp.Size = 13
+        local renderstepped
+        renderstepped = runservice.RenderStepped:Connect(function()
+            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Totem") then
+                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop.Totem.Position)
+                if drop_onscreen then
+                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                    dropesp.Text = "Miserable God"
+                    dropesp.Visible = true
+                else
+                    dropesp.Visible = false
+                end
+            else
+                dropesp.Visible = false
+                dropesp:Remove()
+                renderstepped:Disconnect()
+            end
+        end)
+    end
+    for i,drop in next, workspace:GetChildren() do
+        if drop.Name == "Miserable God" then
+            if drop:FindFirstChild("Totem") then
+                esp(drop)
+            end
+        end
+    end
+    workspace.ChildAdded:Connect(function()
+        if drop.Name == "Miserable God" then
+            if drop:FindFirstChild("Miserable God") then
+                esp(drop)
+            end
+        end
+    end)
+end)
+
+--MiscSection
+MiscSection:NewButton("Execute Infinite Yield", "Infinite Yield", function()
     loadstring(game:HttpGet(('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'),true))()
 end)
-MainSection:NewButton("Unnamed Esp", "ButtonInfo", function()
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/ic3w0lf22/Unnamed-ESP/master/UnnamedESP.lua'))()
-end)
-VisualSection:NewButton("Crystal Lode Esp", "ButtonInfo", function()
-    for i,v in pairs(game.Workspace:GetDescendants()) do -- grabs everything from workspace
-        if v.ClassName == 'UnionOperation' and v.Parent.Name == 'Crystal Lode' then -- checks if it has a handle and if its a touchtransmitter
-            local BillboardGui = Instance.new('BillboardGui') -- Makes Billboardgui
-            local TextLabel = Instance.new('TextLabel') -- makes text label
-            
-            BillboardGui.Parent = v.Parent -- what the billboardgui goes into
-            BillboardGui.AlwaysOnTop = true -- if its on top or not
-            BillboardGui.Size = UDim2.new(0, 50, 0, 50) -- size of it
-            BillboardGui.StudsOffset = Vector3.new(0,2,0)
-            
-            TextLabel.Parent = BillboardGui -- putting textlabel into billboardgui
-            TextLabel.BackgroundColor3 = Color3.new(1,1,1) -- color
-            TextLabel.BackgroundTransparency = 1 -- transparency
-            TextLabel.Size = UDim2.new(1, 0, 1, 0) -- size
-            TextLabel.Text = "Crystal Node" -- what the label says
-            TextLabel.TextColor3 = Color3.new(128, 187, 219) -- color
-            TextLabel.TextScaled = false -- if the text is scaled or not
-            TextLabel.TextStrokeTransparency = true
-        end
-    end
-end)
-VisualSection:NewButton("Gold Node Esp", "ButtonInfo", function()
-    for i,v in pairs(game.Workspace:GetDescendants()) do -- grabs everything from workspace
-        if v.ClassName == 'UnionOperation' and v.Parent.Name == 'Gold Node' then -- checks if it has a handle and if its a touchtransmitter
-            local BillboardGui = Instance.new('BillboardGui') -- Makes Billboardgui
-            local TextLabel = Instance.new('TextLabel') -- makes text label
-            
-            BillboardGui.Parent = v.Parent -- what the billboardgui goes into
-            BillboardGui.AlwaysOnTop = true -- if its on top or not
-            BillboardGui.Size = UDim2.new(0, 50, 0, 50) -- size of it
-            BillboardGui.StudsOffset = Vector3.new(0,2,0)
-            
-            TextLabel.Parent = BillboardGui -- putting textlabel into billboardgui
-            TextLabel.BackgroundColor3 = Color3.new(1,1,1) -- color
-            TextLabel.BackgroundTransparency = 1 -- transparency
-            TextLabel.Size = UDim2.new(1, 0, 1, 0) -- size
-            TextLabel.Text = "Gold Node" -- what the label says
-            TextLabel.TextColor3 = Color3.new(255, 195, 0) -- color
-            TextLabel.TextScaled = false -- if the text is scaled or not
-            TextLabel.TextStrokeTransparency = true 
-        end
-    end
-end)
-VisualSection:NewButton("Old God Esp", "ButtonInfo", function()
-    for i,v in pairs(game.Workspace:GetDescendants()) do -- grabs everything from workspace
-        if v.ClassName == 'Part' and v.Parent.Name == 'Old God' then -- checks if it has a handle and if its a touchtransmitter
-            local BillboardGui = Instance.new('BillboardGui') -- Makes Billboardgui
-            local TextLabel = Instance.new('TextLabel') -- makes text label
-            
-            BillboardGui.Parent = v.Parent -- what the billboardgui goes into
-            BillboardGui.AlwaysOnTop = true -- if its on top or not
-            BillboardGui.Size = UDim2.new(0, 50, 0, 50) -- size of it
-            BillboardGui.StudsOffset = Vector3.new(0,2,0)
-            
-            TextLabel.Parent = BillboardGui -- putting textlabel into billboardgui
-            TextLabel.BackgroundColor3 = Color3.new(1,1,1) -- color
-            TextLabel.BackgroundTransparency = 1 -- transparency
-            TextLabel.Size = UDim2.new(1, 0, 1, 0) -- size
-            TextLabel.Text = "Old God" -- what the label says
-            TextLabel.TextColor3 = Color3.new(203, 132, 66) -- color
-            TextLabel.TextScaled = false -- if the text is scaled or not
-            TextLabel.TextStrokeTransparency = true 
-        end
-    end
-end)
-SettingSection:NewKeybind("Hide Gui", ".", Enum.KeyCode.V, function()
+
+--ChangelogSection
+ChangelogSection:NewLabel("1.0.0 | Esp, Gui Changes")
+
+--SettingSection
+SettingSection:NewKeybind("Toggle Gui", "Toggles Gui", Enum.KeyCode.V, function()
 	Library:ToggleUI()
 end)
