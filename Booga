@@ -643,6 +643,6 @@ end)
 ChangelogSection:NewLabel("1.0.0 | Esp, Gui Changes")
 
 --SettingSection
-SettingSection:NewKeybind("Toggle Gui", "Toggles Gui", Enum.KeyCode.V, function()
+SettingSection:NewKeybind("Toggle Gui", "Toggles Gui", Enum.KeyCode.B, function()
 	Library:ToggleUI()
 end)
