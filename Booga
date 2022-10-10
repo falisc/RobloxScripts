@@ -7,51 +7,6 @@ local runservice = game:GetService("RunService")
 local players = game:GetService("Players")
 local localplayer = players.LocalPlayer
 
-local function PlayerEsp(player, character)
-	local humanoid = character:WaitForChild("Humanoid")
-	local humanoidrootpart = character:WaitForChild("HumanoidRootPart")
-	
-	local text = Drawing.new("Text")
-	text.Visible = false
-	text.Center = true
-	text.Outline = true
-	text.Font = 3
-	text.Color = Color3.fromRGB(40, 127, 71)
-	text.Size = 13
-
-	local c = {}
-
-	local function disconnect()
-		for i,v in pairs(c) do
-			v:Disconnect()
-		end
-	end
-	c.c2 = character.AncestryChanged:Connect(function(_,parent)
-		if not parent then
-			disconnect()
-		end
-	end)
-	c.c3 = humanoid.HealthChanged:Connect(function(v)
-		if (v<=0) or (humanoid:GetState() == Enum.HumanoidStateType.Dead) then
-			disconnect()
-		end
-	end)
-	c.c1 = runservice.RenderStepped:Connect(function()
-		if EspEnabled.player then
-			local humanoidrootpart_pos,humanoidrootpart_onscreen = camera:WorldToViewportPoint(humanoidrootpart.Position)
-			if humanoidrootpart_onscreen then
-				text.Position = Vector2.new(humanoidrootpart_pos.X, humanoidrootpart_pos.Y-25)
-				text.Text = player.Name
-				text.Visible = true
-			else
-				text.Visible = false
-			end
-		else
-			text:Remove()
-			disconnect()
-		end
-	end)
-end
 
 local function GoldEsp(drop, name)
     local rock = drop:WaitForChild("Small Rock", 1)
@@ -464,26 +419,87 @@ local SettingSection = Settings:NewSection("Settings")
 --nothing here rn
 
 --VisualSection1
-VisualSection1:NewButton("Player Esp", "Player Esp", function()
-	EspEnabled.player = not EspEnabled.player
-	if EspEnabled.player then
-		local function p_added(player)
-			if player.Character then
-				PlayerEsp(player, player.Character)
-			end
-			player.CharacterAdded:Connect(function(character)
-				PlayerEsp(player, character)
-			end)
-		end
-		for i,player in next, players:GetPlayers() do
-			if player ~= localplayer then
-				p_added(player)
-			end
-		end
-		playeradded = players.PlayerAdded:Connect(p_added)
-	else
-		playeradded:Disconnect()
-	end
+VisualSection2:NewButton("Player Esp", "Player Esp", function()
+	local camera = workspace.CurrentCamera
+    local players = game:GetService("Players")
+    local localplayer = players.LocalPlayer
+    local runservice = game:GetService("RunService")
+
+    local function esp(p, character)
+        local humanoid = character:WaitForChild("Humanoid")
+        local humanoidrootpart = character:WaitForChild("HumanoidRootPart")
+        
+        local text = Drawing.new("Text")
+        text.Visible = false
+        text.Center = true
+        text.Outline = true
+        text.Font = 3
+        text.Color = Color3.fromRGB(40, 127, 71)
+        text.Size = 13
+
+        local c1
+        local c2
+        local c3
+        
+        local function disconnect()
+            text.Visible = false
+            text:Remove()
+            if c1 then
+                c1:Disconnect()
+                c1 = nil
+            end
+            if c2 then
+                c2:Disconnect()
+                c2 = nil
+            end
+            if c3 then
+                c3:Disconnect()
+                c3 = nil
+            end
+        end
+        
+        c2 = character.AncestryChanged:Connect(function(_,parent)
+            if not parent then
+                disconnect()
+            end
+        end)
+        
+        c3 = humanoid.HealthChanged:Connect(function(v)
+            pcall(function()
+                if (v<=0) or (h:GetState() == Enum.HumanoidStateType.Dead) then
+                    disconnect()
+                end
+            end)
+        end)
+        
+        c1 = runservice.RenderStepped:Connect(function()
+            local humanoidrootpart_pos,humanoidrootpart_onscreen = camera:WorldToViewportPoint(humanoidrootpart.Position)
+            if humanoidrootpart_onscreen then
+                text.Position = Vector2.new(humanoidrootpart_pos.X, humanoidrootpart_pos.Y-25)
+                text.Text = p.Name
+                text.Visible = true
+            else
+                text.Visible = false
+            end
+        end)
+        end
+
+        local function p_added(p)
+            if p.Character then
+                esp(p,p.Character)
+            end
+            p.CharacterAdded:Connect(function(character)
+                esp(p,character)
+            end)
+        end
+
+        for i,p in next, players:GetPlayers() do
+            if p ~= localplayer then
+                p_added(p)
+            end
+        end
+
+        players.PlayerAdded:Connect(p_added)
 end)
 
 --VisualSection2
