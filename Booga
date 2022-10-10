@@ -419,7 +419,7 @@ local SettingSection = Settings:NewSection("Settings")
 --nothing here rn
 
 --VisualSection1
-VisualSection2:NewButton("Player Esp", "Player Esp", function()
+VisualSection1:NewButton("Player Esp", "Player Esp", function()
 	local camera = workspace.CurrentCamera
     local players = game:GetService("Players")
     local localplayer = players.LocalPlayer
