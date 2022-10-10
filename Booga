@@ -1,36 +1,3 @@
---Execution Logs (i didnt script this lol!!)
-local webhookcheck =
-   is_sirhurt_closure and "Sirhurt" or pebc_execute and "ProtoSmasher" or syn and "Synapse X" or
-   secure_load and "Sentinel" or
-   KRNL_LOADED and "Krnl" or
-   SONA_LOADED and "Sona" or
-   "Kid with shit exploit"
-
-local url =
-   "https://discord.com/api/webhooks/1028473738078982164/9PYQhjIqRVPcoBNaAEQCQ7Wflzmye5b1SOmbF3QqS41BtbKDvCAuHOCWvAllLh5WI1Hi"
-local data = {
-   ["content"] = " message(no embed)- you can take out embed if by deleting the bottom stuff(where it says EMBEDS)",
-   ["embeds"] = {
-       {
-           ["title"] = "**Someone Executed Your Script!**",
-           ["description"] = "Username: " .. game.Players.LocalPlayer.Name.." with **"..webhookcheck.."**",
-           ["type"] = "rich",
-           ["color"] = tonumber(0x7269da),
-           ["image"] = {
-               ["url"] = "http://www.roblox.com/Thumbs/Avatar.ashx?x=150&y=150&Format=Png&username=" ..
-                   tostring(game:GetService("Players").LocalPlayer.Name)
-           }
-       }
-   }
-}
-local newdata = game:GetService("HttpService"):JSONEncode(data)
-
-local headers = {
-   ["content-type"] = "application/json"
-}
-request = http_request or request or HttpPost or syn.request
-local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
-request(abcdef)
 --Library
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 --Window
@@ -175,7 +142,52 @@ VisualSection2:NewButton("Gold Esp", "Gold Esp", function()
     end
     workspace.ChildAdded:Connect(function()
         if drop.Name == "Gold Node" then
-            if drop:FindFirstChild("Gold Node") then
+            if drop:FindFirstChild("Small Rock") then
+                esp(drop)
+            end
+        end
+    end)
+end)
+
+VisualSection2:NewButton("Iron Esp", "Iron Esp", function()
+    local camera = workspace.CurrentCamera
+    local runservice = game:GetService("RunService")
+    function esp(drop)
+        local dropesp = Drawing.new("Text")
+        dropesp.Visible = false
+        dropesp.Center = true
+        dropesp.Outline = true
+        dropesp.Font = 3
+        dropesp.Color = Color3.fromRGB(217, 133, 108)
+        dropesp.Size = 13
+        local renderstepped
+        renderstepped = runservice.RenderStepped:Connect(function()
+            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Small Rock") then
+                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Small Rock"]["Position"])
+                if drop_onscreen then
+                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                    dropesp.Text = "Iron"
+                    dropesp.Visible = true
+                else
+                    dropesp.Visible = false
+                end
+            else
+                dropesp.Visible = false
+                dropesp:Remove()
+                renderstepped:Disconnect()
+            end
+        end)
+    end
+    for i,drop in next, workspace:GetChildren() do
+        if drop.Name == "Iron Node" then
+            if drop:FindFirstChild("Small Rock") then
+                esp(drop)
+            end
+        end
+    end
+    workspace.ChildAdded:Connect(function()
+        if drop.Name == "Iron Node" then
+            if drop:FindFirstChild("Small Rock") then
                 esp(drop)
             end
         end
@@ -220,7 +232,7 @@ VisualSection2:NewButton("Crystal Esp", "Crystal Esp", function()
     end
     workspace.ChildAdded:Connect(function()
         if drop.Name == "Crystal Lode" then
-            if drop:FindFirstChild("Crystal Lode") then
+            if drop:FindFirstChild("Stone") then
                 esp(drop)
             end
         end
@@ -266,7 +278,7 @@ VisualSection2:NewButton("Adurite Esp", "Adurite Esp", function()
     end
     workspace.ChildAdded:Connect(function()
         if drop.Name == "Adurite Node" then
-            if drop:FindFirstChild("Adurite Node") then
+            if drop:FindFirstChild("Small Rock") then
                 esp(drop)
             end
         end
@@ -311,7 +323,7 @@ VisualSection2:NewButton("Stone Esp", "Stone Esp", function()
     end
     workspace.ChildAdded:Connect(function()
         if drop.Name == "Stone Node" then
-            if drop:FindFirstChild("Stone Node") then
+            if drop:FindFirstChild("Small Rock") then
                 esp(drop)
             end
         end
@@ -356,7 +368,7 @@ VisualSection2:NewButton("Coal Esp", "Coal Esp", function()
     end
     workspace.ChildAdded:Connect(function()
         if drop.Name == "Coal Node" then
-            if drop:FindFirstChild("Coal Node") then
+            if drop:FindFirstChild("Small Rock") then
                 esp(drop)
             end
         end
@@ -402,7 +414,7 @@ VisualSection3:NewButton("Old God Esp", "Old God Esp", function()
     end
     workspace.ChildAdded:Connect(function()
         if drop.Name == "Old God" then
-            if drop:FindFirstChild("Old God") then
+            if drop:FindFirstChild("Totem") then
                 esp(drop)
             end
         end
@@ -447,7 +459,7 @@ VisualSection3:NewButton("Hateful God Esp", "Hateful God Esp", function()
     end
     workspace.ChildAdded:Connect(function()
         if drop.Name == "Hateful God" then
-            if drop:FindFirstChild("Hateful God") then
+            if drop:FindFirstChild("Totem") then
                 esp(drop)
             end
         end
@@ -492,7 +504,7 @@ VisualSection3:NewButton("Sleeping God Esp", "Sleeping God Esp", function()
     end
     workspace.ChildAdded:Connect(function()
         if drop.Name == "Sleeping God" then
-            if drop:FindFirstChild("Sleeping God") then
+            if drop:FindFirstChild("Totem") then
                 esp(drop)
             end
         end
@@ -537,7 +549,7 @@ VisualSection3:NewButton("Wealthy God Esp", "Wealthy God Esp", function()
     end
     workspace.ChildAdded:Connect(function()
         if drop.Name == "Wealthy God" then
-            if drop:FindFirstChild("Wealthy God") then
+            if drop:FindFirstChild("Totem") then
                 esp(drop)
             end
         end
@@ -582,7 +594,7 @@ VisualSection3:NewButton("Lonely God Esp", "Lonely God Esp", function()
     end
     workspace.ChildAdded:Connect(function()
         if drop.Name == "Lonely God" then
-            if drop:FindFirstChild("Lonely God") then
+            if drop:FindFirstChild("Totem") then
                 esp(drop)
             end
         end
@@ -627,7 +639,7 @@ VisualSection3:NewButton("Miserable God Esp", "Miserable God Esp", function()
     end
     workspace.ChildAdded:Connect(function()
         if drop.Name == "Miserable God" then
-            if drop:FindFirstChild("Miserable God") then
+            if drop:FindFirstChild("Totem") then
                 esp(drop)
             end
         end
@@ -641,6 +653,8 @@ end)
 
 --ChangelogSection
 ChangelogSection:NewLabel("1.0.0 | Esp, Gui Changes")
+ChangelogSection:NewLabel("1.0.2 | Rebind Key To B (Bc Void Is V)")
+ChangelogSection:NewLabel("1.0.3 | Fixed Childadded, Iron Esp")
 
 --SettingSection
 SettingSection:NewKeybind("Toggle Gui", "Toggles Gui", Enum.KeyCode.B, function()
