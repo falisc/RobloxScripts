@@ -1,3 +1,447 @@
+local camera = workspace.CurrentCamera
+local runservice = game:GetService("RunService")
+local EspEnabled = {}
+
+local camera = workspace.CurrentCamera
+local runservice = game:GetService("RunService")
+local players = game:GetService("Players")
+local localplayer = players.LocalPlayer
+
+local function PlayerEsp(player, character)
+	local humanoid = character:WaitForChild("Humanoid")
+	local humanoidrootpart = character:WaitForChild("HumanoidRootPart")
+	
+	local text = Drawing.new("Text")
+	text.Visible = false
+	text.Center = true
+	text.Outline = true
+	text.Font = 3
+	text.Color = Color3.fromRGB(40, 127, 71)
+	text.Size = 13
+
+	local c = {}
+
+	local function disconnect()
+		for i,v in pairs(c) do
+			v:Disconnect()
+		end
+	end
+	c.c2 = character.AncestryChanged:Connect(function(_,parent)
+		if not parent then
+			disconnect()
+		end
+	end)
+	c.c3 = humanoid.HealthChanged:Connect(function(v)
+		if (v<=0) or (humanoid:GetState() == Enum.HumanoidStateType.Dead) then
+			disconnect()
+		end
+	end)
+	c.c1 = runservice.RenderStepped:Connect(function()
+		if EspEnabled.player then
+			local humanoidrootpart_pos,humanoidrootpart_onscreen = camera:WorldToViewportPoint(humanoidrootpart.Position)
+			if humanoidrootpart_onscreen then
+				text.Position = Vector2.new(humanoidrootpart_pos.X, humanoidrootpart_pos.Y-25)
+				text.Text = player.Name
+				text.Visible = true
+			else
+				text.Visible = false
+			end
+		else
+			text:Remove()
+			disconnect()
+		end
+	end)
+end
+
+local function GoldEsp(drop, name)
+    local rock = drop:WaitForChild("Small Rock", 1)
+    if not rock then
+        return
+    end
+    local dropesp = Drawing.new("Text")
+    dropesp.Visible = false
+    dropesp.Center = true
+    dropesp.Outline = true
+    dropesp.Font = 3
+    dropesp.Color = Color3.fromRGB(220, 188, 129)
+    dropesp.Size = 13
+    local renderstepped
+    renderstepped = runservice.RenderStepped:Connect(function()
+        if EspEnabled[name] and (drop.Parent == workspace) and (rock.Parent == drop) then
+            local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Small Rock"]["Position"])
+            if drop_onscreen then
+                dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                dropesp.Text = name
+                dropesp.Visible = true
+            else
+                dropesp.Visible = false
+            end
+        else
+            dropesp.Visible = false
+            dropesp:Remove()
+            renderstepped:Disconnect()
+        end
+    end)
+end
+
+local function IronEsp(drop, name)
+    local rock = drop:WaitForChild("Small Rock", 1)
+    if not rock then
+        return
+    end
+    local dropesp = Drawing.new("Text")
+    dropesp.Visible = false
+    dropesp.Center = true
+    dropesp.Outline = true
+    dropesp.Font = 3
+    dropesp.Color = Color3.fromRGB(203, 132, 66)
+    dropesp.Size = 13
+    local renderstepped
+    renderstepped = runservice.RenderStepped:Connect(function()
+        if EspEnabled[name] and (drop.Parent == workspace) and (rock.Parent == drop) then
+            local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Small Rock"]["Position"])
+            if drop_onscreen then
+                dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                dropesp.Text = name
+                dropesp.Visible = true
+            else
+                dropesp.Visible = false
+            end
+        else
+            dropesp.Visible = false
+            dropesp:Remove()
+            renderstepped:Disconnect()
+        end
+    end)
+end
+
+local function CrystalEsp(drop, name)
+    local rock = drop:WaitForChild("Stone", 1)
+    if not rock then
+        return
+    end
+    local dropesp = Drawing.new("Text")
+    dropesp.Visible = false
+    dropesp.Center = true
+    dropesp.Outline = true
+    dropesp.Font = 3
+    dropesp.Color = Color3.fromRGB(13, 105, 172)
+    dropesp.Size = 13
+    local renderstepped
+    renderstepped = runservice.RenderStepped:Connect(function()
+        if EspEnabled[name] and (drop.Parent == workspace) and (rock.Parent == drop) then
+            local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Stone"]["Position"])
+            if drop_onscreen then
+                dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                dropesp.Text = name
+                dropesp.Visible = true
+            else
+                dropesp.Visible = false
+            end
+        else
+            dropesp.Visible = false
+            dropesp:Remove()
+            renderstepped:Disconnect()
+        end
+    end)
+end
+
+local function AduriteEsp(drop, name)
+    local rock = drop:WaitForChild("Small Rock", 1)
+    if not rock then
+        return
+    end
+    local dropesp = Drawing.new("Text")
+    dropesp.Visible = false
+    dropesp.Center = true
+    dropesp.Outline = true
+    dropesp.Font = 3
+    dropesp.Color = Color3.fromRGB(196, 40, 28)
+    dropesp.Size = 13
+    local renderstepped
+    renderstepped = runservice.RenderStepped:Connect(function()
+        if EspEnabled[name] and (drop.Parent == workspace) and (rock.Parent == drop) then
+            local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Small Rock"]["Position"])
+            if drop_onscreen then
+                dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                dropesp.Text = name
+                dropesp.Visible = true
+            else
+                dropesp.Visible = false
+            end
+        else
+            dropesp.Visible = false
+            dropesp:Remove()
+            renderstepped:Disconnect()
+        end
+    end)
+end
+
+local function StoneEsp(drop, name)
+    local rock = drop:WaitForChild("Small Rock", 1)
+    if not rock then
+        return
+    end
+    local dropesp = Drawing.new("Text")
+    dropesp.Visible = false
+    dropesp.Center = true
+    dropesp.Outline = true
+    dropesp.Font = 3
+    dropesp.Color = Color3.fromRGB(161, 165, 162)
+    dropesp.Size = 13
+    local renderstepped
+    renderstepped = runservice.RenderStepped:Connect(function()
+        if EspEnabled[name] and (drop.Parent == workspace) and (rock.Parent == drop) then
+            local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Small Rock"]["Position"])
+            if drop_onscreen then
+                dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                dropesp.Text = name
+                dropesp.Visible = true
+            else
+                dropesp.Visible = false
+            end
+        else
+            dropesp.Visible = false
+            dropesp:Remove()
+            renderstepped:Disconnect()
+        end
+    end)
+end
+
+local function CoalEsp(drop, name)
+    local rock = drop:WaitForChild("Small Rock", 1)
+    if not rock then
+        return
+    end
+    local dropesp = Drawing.new("Text")
+    dropesp.Visible = false
+    dropesp.Center = true
+    dropesp.Outline = true
+    dropesp.Font = 3
+    dropesp.Color = Color3.fromRGB(17, 17, 17)
+    dropesp.Size = 13
+    local renderstepped
+    renderstepped = runservice.RenderStepped:Connect(function()
+        if EspEnabled[name] and (drop.Parent == workspace) and (rock.Parent == drop) then
+            local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Small Rock"]["Position"])
+            if drop_onscreen then
+                dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                dropesp.Text = name
+                dropesp.Visible = true
+            else
+                dropesp.Visible = false
+            end
+        else
+            dropesp.Visible = false
+            dropesp:Remove()
+            renderstepped:Disconnect()
+        end
+    end)
+end
+
+local function OldGodEsp(drop, name)
+    local rock = drop:WaitForChild("Totem", 1)
+    if not rock then
+        return
+    end
+    local dropesp = Drawing.new("Text")
+    dropesp.Visible = false
+    dropesp.Center = true
+    dropesp.Outline = true
+    dropesp.Font = 3
+    dropesp.Color = Color3.fromRGB(98, 37, 209)
+    dropesp.Size = 13
+    local renderstepped
+    renderstepped = runservice.RenderStepped:Connect(function()
+        if EspEnabled[name] and (drop.Parent == workspace) and (rock.Parent == drop) then
+            local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Totem"]["Position"])
+            if drop_onscreen then
+                dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                dropesp.Text = name
+                dropesp.Visible = true
+            else
+                dropesp.Visible = false
+            end
+        else
+            dropesp.Visible = false
+            dropesp:Remove()
+            renderstepped:Disconnect()
+        end
+    end)
+end
+
+local function HatefulGodEsp(drop, name)
+    local rock = drop:WaitForChild("Totem", 1)
+    if not rock then
+        return
+    end
+    local dropesp = Drawing.new("Text")
+    dropesp.Visible = false
+    dropesp.Center = true
+    dropesp.Outline = true
+    dropesp.Font = 3
+    dropesp.Color = Color3.fromRGB(98, 37, 209)
+    dropesp.Size = 13
+    local renderstepped
+    renderstepped = runservice.RenderStepped:Connect(function()
+        if EspEnabled[name] and (drop.Parent == workspace) and (rock.Parent == drop) then
+            local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Totem"]["Position"])
+            if drop_onscreen then
+                dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                dropesp.Text = name
+                dropesp.Visible = true
+            else
+                dropesp.Visible = false
+            end
+        else
+            dropesp.Visible = false
+            dropesp:Remove()
+            renderstepped:Disconnect()
+        end
+    end)
+end
+
+local function SleepingGodEsp(drop, name)
+    local rock = drop:WaitForChild("Totem", 1)
+    if not rock then
+        return
+    end
+    local dropesp = Drawing.new("Text")
+    dropesp.Visible = false
+    dropesp.Center = true
+    dropesp.Outline = true
+    dropesp.Font = 3
+    dropesp.Color = Color3.fromRGB(98, 37, 209)
+    dropesp.Size = 13
+    local renderstepped
+    renderstepped = runservice.RenderStepped:Connect(function()
+        if EspEnabled[name] and (drop.Parent == workspace) and (rock.Parent == drop) then
+            local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Totem"]["Position"])
+            if drop_onscreen then
+                dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                dropesp.Text = name
+                dropesp.Visible = true
+            else
+                dropesp.Visible = false
+            end
+        else
+            dropesp.Visible = false
+            dropesp:Remove()
+            renderstepped:Disconnect()
+        end
+    end)
+end
+
+local function WealthyGodEsp(drop, name)
+    local rock = drop:WaitForChild("Totem", 1)
+    if not rock then
+        return
+    end
+    local dropesp = Drawing.new("Text")
+    dropesp.Visible = false
+    dropesp.Center = true
+    dropesp.Outline = true
+    dropesp.Font = 3
+    dropesp.Color = Color3.fromRGB(98, 37, 209)
+    dropesp.Size = 13
+    local renderstepped
+    renderstepped = runservice.RenderStepped:Connect(function()
+        if EspEnabled[name] and (drop.Parent == workspace) and (rock.Parent == drop) then
+            local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Totem"]["Position"])
+            if drop_onscreen then
+                dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                dropesp.Text = name
+                dropesp.Visible = true
+            else
+                dropesp.Visible = false
+            end
+        else
+            dropesp.Visible = false
+            dropesp:Remove()
+            renderstepped:Disconnect()
+        end
+    end)
+end
+
+local function LonelyGodEsp(drop, name)
+    local rock = drop:WaitForChild("Totem", 1)
+    if not rock then
+        return
+    end
+    local dropesp = Drawing.new("Text")
+    dropesp.Visible = false
+    dropesp.Center = true
+    dropesp.Outline = true
+    dropesp.Font = 3
+    dropesp.Color = Color3.fromRGB(98, 37, 209)
+    dropesp.Size = 13
+    local renderstepped
+    renderstepped = runservice.RenderStepped:Connect(function()
+        if EspEnabled[name] and (drop.Parent == workspace) and (rock.Parent == drop) then
+            local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Totem"]["Position"])
+            if drop_onscreen then
+                dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                dropesp.Text = name
+                dropesp.Visible = true
+            else
+                dropesp.Visible = false
+            end
+        else
+            dropesp.Visible = false
+            dropesp:Remove()
+            renderstepped:Disconnect()
+        end
+    end)
+end
+
+local function MiserableGodEsp(drop, name)
+    local rock = drop:WaitForChild("Totem", 1)
+    if not rock then
+        return
+    end
+    local dropesp = Drawing.new("Text")
+    dropesp.Visible = false
+    dropesp.Center = true
+    dropesp.Outline = true
+    dropesp.Font = 3
+    dropesp.Color = Color3.fromRGB(98, 37, 209)
+    dropesp.Size = 13
+    local renderstepped
+    renderstepped = runservice.RenderStepped:Connect(function()
+        if EspEnabled[name] and (drop.Parent == workspace) and (rock.Parent == drop) then
+            local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Totem"]["Position"])
+            if drop_onscreen then
+                dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
+                dropesp.Text = name
+                dropesp.Visible = true
+            else
+                dropesp.Visible = false
+            end
+        else
+            dropesp.Visible = false
+            dropesp:Remove()
+            renderstepped:Disconnect()
+        end
+    end)
+end
+
+local playeradded
+
+local goldadded
+local ironadded
+local crystaladded
+local aduriteadded
+local stoneadded
+local coaladded
+
+local oldgodadded
+local hatefulgodadded
+local sleepinggodadded
+local wealthygodadded
+local lonelygodadded
+local miserablegodadded
+
+
 --Library
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 --Window
@@ -20,630 +464,257 @@ local SettingSection = Settings:NewSection("Settings")
 --nothing here rn
 
 --VisualSection1
-VisualSection1:NewButton("Player Esp", "Player Esp", function()
-    local camera = workspace.CurrentCamera
-    local players = game:GetService("Players")
-    local localplayer = players.LocalPlayer
-    local runservice = game:GetService("RunService")
-
-    local function esp(p, character)
-        local humanoid = character:WaitForChild("Humanoid")
-        local humanoidrootpart = character:WaitForChild("HumanoidRootPart")
-        
-        local text = Drawing.new("Text")
-        text.Visible = false
-        text.Center = true
-        text.Outline = true
-        text.Font = 3
-        text.Color = Color3.fromRGB(40, 127, 71)
-        text.Size = 13
-
-        local c1
-        local c2
-        local c3
-        
-        local function disconnect()
-            text.Visible = false
-            text:Remove()
-            if c1 then
-                c1:Disconnect()
-                c1 = nil
-            end
-            if c2 then
-                c2:Disconnect()
-                c2 = nil
-            end
-            if c3 then
-                c3:Disconnect()
-                c3 = nil
-            end
-        end
-        
-        c2 = character.AncestryChanged:Connect(function(_,parent)
-            if not parent then
-                disconnect()
-            end
-        end)
-        
-        c3 = humanoid.HealthChanged:Connect(function(v)
-            pcall(function()
-                if (v<=0) or (h:GetState() == Enum.HumanoidStateType.Dead) then
-                    disconnect()
-                end
-            end)
-        end)
-        
-        c1 = runservice.RenderStepped:Connect(function()
-            local humanoidrootpart_pos,humanoidrootpart_onscreen = camera:WorldToViewportPoint(humanoidrootpart.Position)
-            if humanoidrootpart_onscreen then
-                text.Position = Vector2.new(humanoidrootpart_pos.X, humanoidrootpart_pos.Y-25)
-                text.Text = p.Name
-                text.Visible = true
-            else
-                text.Visible = false
-            end
-        end)
-    end
-
-    local function p_added(p)
-        if p.Character then
-            esp(p,p.Character)
-        end
-        p.CharacterAdded:Connect(function(character)
-            esp(p,character)
-        end)
-    end
-
-    for i,p in next, players:GetPlayers() do
-        if p ~= localplayer then
-            p_added(p)
-        end
-    end
-
-    players.PlayerAdded:Connect(p_added)
+VisualSection2:NewButton("Player Esp", "Player Esp", function()
+	EspEnabled.player = not EspEnabled.player
+	if EspEnabled.player then
+		local function p_added(player)
+			if player.Character then
+				PlayerEsp(player, player.Character)
+			end
+			player.CharacterAdded:Connect(function(character)
+				PlayerEsp(player, character)
+			end)
+		end
+		for i,player in next, players:GetPlayers() do
+			if player ~= localplayer then
+				p_added(player)
+			end
+		end
+		playeradded = players.PlayerAdded:Connect(p_added)
+	else
+		playeradded:Disconnect()
+	end
 end)
 
 --VisualSection2
 VisualSection2:NewButton("Gold Esp", "Gold Esp", function()
-    local camera = workspace.CurrentCamera
-    local runservice = game:GetService("RunService")
-    function esp(drop)
-        local dropesp = Drawing.new("Text")
-        dropesp.Visible = false
-        dropesp.Center = true
-        dropesp.Outline = true
-        dropesp.Font = 3
-        dropesp.Color = Color3.fromRGB(249, 233, 153)
-        dropesp.Size = 13
-        local renderstepped
-        renderstepped = runservice.RenderStepped:Connect(function()
-            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Small Rock") then
-                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Small Rock"]["Position"])
-                if drop_onscreen then
-                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
-                    dropesp.Text = "Gold"
-                    dropesp.Visible = true
-                else
-                    dropesp.Visible = false
-                end
-            else
-                dropesp.Visible = false
-                dropesp:Remove()
-                renderstepped:Disconnect()
+    local name = "Gold"
+    EspEnabled[name] = not EspEnabled[name]
+    if EspEnabled[name] then
+        goldadded = workspace.ChildAdded:Connect(function(drop)
+            if drop.Name == "Gold Node" then
+                GoldEsp(drop, name)
             end
         end)
-    end
-    for i,drop in next, workspace:GetChildren() do
-        if drop.Name == "Gold Node" then
-            if drop:FindFirstChild("Small Rock") then
-                esp(drop)
+        for i,drop in next, workspace:GetChildren() do
+            if drop.Name == "Gold Node" then
+                task.spawn(GoldEsp, drop, name)
             end
         end
+    else
+        goldadded:Disconnect()
     end
-    workspace.ChildAdded:Connect(function()
-        if drop.Name == "Gold Node" then
-            if drop:FindFirstChild("Small Rock") then
-                esp(drop)
-            end
-        end
-    end)
 end)
 
 VisualSection2:NewButton("Iron Esp", "Iron Esp", function()
-    local camera = workspace.CurrentCamera
-    local runservice = game:GetService("RunService")
-    function esp(drop)
-        local dropesp = Drawing.new("Text")
-        dropesp.Visible = false
-        dropesp.Center = true
-        dropesp.Outline = true
-        dropesp.Font = 3
-        dropesp.Color = Color3.fromRGB(217, 133, 108)
-        dropesp.Size = 13
-        local renderstepped
-        renderstepped = runservice.RenderStepped:Connect(function()
-            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Small Rock") then
-                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Small Rock"]["Position"])
-                if drop_onscreen then
-                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
-                    dropesp.Text = "Iron"
-                    dropesp.Visible = true
-                else
-                    dropesp.Visible = false
-                end
-            else
-                dropesp.Visible = false
-                dropesp:Remove()
-                renderstepped:Disconnect()
+    local name = "Iron"
+    EspEnabled[name] = not EspEnabled[name]
+    if EspEnabled[name] then
+        goldadded = workspace.ChildAdded:Connect(function(drop)
+            if drop.Name == "Iron Node" then
+                IronEsp(drop, name)
             end
         end)
-    end
-    for i,drop in next, workspace:GetChildren() do
-        if drop.Name == "Iron Node" then
-            if drop:FindFirstChild("Small Rock") then
-                esp(drop)
+        for i,drop in next, workspace:GetChildren() do
+            if drop.Name == "Iron Node" then
+                task.spawn(IronEsp, drop, name)
             end
         end
+    else
+        ironadded:Disconnect()
     end
-    workspace.ChildAdded:Connect(function()
-        if drop.Name == "Iron Node" then
-            if drop:FindFirstChild("Small Rock") then
-                esp(drop)
-            end
-        end
-    end)
 end)
 
 VisualSection2:NewButton("Crystal Esp", "Crystal Esp", function()
-    local camera = workspace.CurrentCamera
-    local runservice = game:GetService("RunService")
-    function esp(drop)
-        local dropesp = Drawing.new("Text")
-        dropesp.Visible = false
-        dropesp.Center = true
-        dropesp.Outline = true
-        dropesp.Font = 3
-        dropesp.Color = Color3.fromRGB(13, 105, 172)
-        dropesp.Size = 13
-        local renderstepped
-        renderstepped = runservice.RenderStepped:Connect(function()
-            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Stone") then
-                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop.Stone.Position)
-                if drop_onscreen then
-                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
-                    dropesp.Text = "Crystal"
-                    dropesp.Visible = true
-                else
-                    dropesp.Visible = false
-                end
-            else
-                dropesp.Visible = false
-                dropesp:Remove()
-                renderstepped:Disconnect()
+    local name = "Crystal"
+    EspEnabled[name] = not EspEnabled[name]
+    if EspEnabled[name] then
+        crystaladded = workspace.ChildAdded:Connect(function(drop)
+            if drop.Name == "Crystal Lode" then
+                CrystalEsp(drop, name)
             end
         end)
-    end
-    for i,drop in next, workspace:GetChildren() do
-        if drop.Name == "Crystal Lode" then
-            if drop:FindFirstChild("Stone") then
-                esp(drop)
+        for i,drop in next, workspace:GetChildren() do
+            if drop.Name == "Crystal Lode" then
+                task.spawn(CrystalEsp, drop, name)
             end
         end
+    else
+        crystaladded:Disconnect()
     end
-    workspace.ChildAdded:Connect(function()
-        if drop.Name == "Crystal Lode" then
-            if drop:FindFirstChild("Stone") then
-                esp(drop)
-            end
-        end
-    end)
 end)
 
 
 VisualSection2:NewButton("Adurite Esp", "Adurite Esp", function()
-    local camera = workspace.CurrentCamera
-    local runservice = game:GetService("RunService")
-    function esp(drop)
-        local dropesp = Drawing.new("Text")
-        dropesp.Visible = false
-        dropesp.Center = true
-        dropesp.Outline = true
-        dropesp.Font = 3
-        dropesp.Color = Color3.fromRGB(196, 40, 28)
-        dropesp.Size = 13
-        local renderstepped
-        renderstepped = runservice.RenderStepped:Connect(function()
-            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Small Rock") then
-                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Small Rock"]["Position"])
-                if drop_onscreen then
-                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
-                    dropesp.Text = "Adurite"
-                    dropesp.Visible = true
-                else
-                    dropesp.Visible = false
-                end
-            else
-                dropesp.Visible = false
-                dropesp:Remove()
-                renderstepped:Disconnect()
+    local name = "Adurite"
+    EspEnabled[name] = not EspEnabled[name]
+    if EspEnabled[name] then
+        goldadded = workspace.ChildAdded:Connect(function(drop)
+            if drop.Name == "Adurite Node" then
+                AduriteEsp(drop, name)
             end
         end)
-    end
-    for i,drop in next, workspace:GetChildren() do
-        if drop.Name == "Adurite Node" then
-            if drop:FindFirstChild("Small Rock") then
-                esp(drop)
+        for i,drop in next, workspace:GetChildren() do
+            if drop.Name == "Adurite Node" then
+                task.spawn(AduriteEsp, drop, name)
             end
         end
+    else
+        aduriteadded:Disconnect()
     end
-    workspace.ChildAdded:Connect(function()
-        if drop.Name == "Adurite Node" then
-            if drop:FindFirstChild("Small Rock") then
-                esp(drop)
-            end
-        end
-    end)
 end)
 
 VisualSection2:NewButton("Stone Esp", "Stone Esp", function()
-    local camera = workspace.CurrentCamera
-    local runservice = game:GetService("RunService")
-    function esp(drop)
-        local dropesp = Drawing.new("Text")
-        dropesp.Visible = false
-        dropesp.Center = true
-        dropesp.Outline = true
-        dropesp.Font = 3
-        dropesp.Color = Color3.fromRGB(161, 165, 162)
-        dropesp.Size = 13
-        local renderstepped
-        renderstepped = runservice.RenderStepped:Connect(function()
-            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Small Rock") then
-                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Small Rock"]["Position"])
-                if drop_onscreen then
-                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
-                    dropesp.Text = "Stone"
-                    dropesp.Visible = true
-                else
-                    dropesp.Visible = false
-                end
-            else
-                dropesp.Visible = false
-                dropesp:Remove()
-                renderstepped:Disconnect()
+    local name = "Stone"
+    EspEnabled[name] = not EspEnabled[name]
+    if EspEnabled[name] then
+        goldadded = workspace.ChildAdded:Connect(function(drop)
+            if drop.Name == "Stone Node" then
+                StoneEsp(drop, name)
             end
         end)
-    end
-    for i,drop in next, workspace:GetChildren() do
-        if drop.Name == "Stone Node" then
-            if drop:FindFirstChild("Small Rock") then
-                esp(drop)
+        for i,drop in next, workspace:GetChildren() do
+            if drop.Name == "Stone Node" then
+                task.spawn(StoneEsp, drop, name)
             end
         end
+    else
+        stoneadded:Disconnect()
     end
-    workspace.ChildAdded:Connect(function()
-        if drop.Name == "Stone Node" then
-            if drop:FindFirstChild("Small Rock") then
-                esp(drop)
-            end
-        end
-    end)
 end)
 
 VisualSection2:NewButton("Coal Esp", "Coal Esp", function()
-    local camera = workspace.CurrentCamera
-    local runservice = game:GetService("RunService")
-    function esp(drop)
-        local dropesp = Drawing.new("Text")
-        dropesp.Visible = false
-        dropesp.Center = true
-        dropesp.Outline = true
-        dropesp.Font = 3
-        dropesp.Color = Color3.fromRGB(109, 110, 108)
-        dropesp.Size = 13
-        local renderstepped
-        renderstepped = runservice.RenderStepped:Connect(function()
-            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Small Rock") then
-                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop["Small Rock"]["Position"])
-                if drop_onscreen then
-                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
-                    dropesp.Text = "Coal"
-                    dropesp.Visible = true
-                else
-                    dropesp.Visible = false
-                end
-            else
-                dropesp.Visible = false
-                dropesp:Remove()
-                renderstepped:Disconnect()
+    local name = "Coal"
+    EspEnabled[name] = not EspEnabled[name]
+    if EspEnabled[name] then
+        goldadded = workspace.ChildAdded:Connect(function(drop)
+            if drop.Name == "Coal Node" then
+                CoalEsp(drop, name)
             end
         end)
-    end
-    for i,drop in next, workspace:GetChildren() do
-        if drop.Name == "Coal Node" then
-            if drop:FindFirstChild("Small Rock") then
-                esp(drop)
+        for i,drop in next, workspace:GetChildren() do
+            if drop.Name == "Coal Node" then
+                task.spawn(CoalEsp, drop, name)
             end
         end
+    else
+        coaladded:Disconnect()
     end
-    workspace.ChildAdded:Connect(function()
-        if drop.Name == "Coal Node" then
-            if drop:FindFirstChild("Small Rock") then
-                esp(drop)
-            end
-        end
-    end)
 end)
 
 --VisualSection3
 VisualSection3:NewButton("Old God Esp", "Old God Esp", function()
-    local camera = workspace.CurrentCamera
-    local runservice = game:GetService("RunService")
-    function esp(drop)
-        local dropesp = Drawing.new("Text")
-        dropesp.Visible = false
-        dropesp.Center = true
-        dropesp.Outline = true
-        dropesp.Font = 3
-        dropesp.Color = Color3.fromRGB(104, 92, 67)
-        dropesp.Size = 13
-        local renderstepped
-        renderstepped = runservice.RenderStepped:Connect(function()
-            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Totem") then
-                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop.Totem.Position)
-                if drop_onscreen then
-                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
-                    dropesp.Text = "Old God"
-                    dropesp.Visible = true
-                else
-                    dropesp.Visible = false
-                end
-            else
-                dropesp.Visible = false
-                dropesp:Remove()
-                renderstepped:Disconnect()
+    local name = "Old God"
+    EspEnabled[name] = not EspEnabled[name]
+    if EspEnabled[name] then
+        goldadded = workspace.ChildAdded:Connect(function(drop)
+            if drop.Name == "Old God" then
+                OldGodEsp(drop, name)
             end
         end)
-    end
-    for i,drop in next, workspace:GetChildren() do
-        if drop.Name == "Old God" then
-            if drop:FindFirstChild("Totem") then
-                esp(drop)
+        for i,drop in next, workspace:GetChildren() do
+            if drop.Name == "Old God" then
+                task.spawn(OldGodEsp, drop, name)
             end
         end
+    else
+        oldgodadded:Disconnect()
     end
-    workspace.ChildAdded:Connect(function()
-        if drop.Name == "Old God" then
-            if drop:FindFirstChild("Totem") then
-                esp(drop)
-            end
-        end
-    end)
 end)
 
 VisualSection3:NewButton("Hateful God Esp", "Hateful God Esp", function()
-    local camera = workspace.CurrentCamera
-    local runservice = game:GetService("RunService")
-    function esp(drop)
-        local dropesp = Drawing.new("Text")
-        dropesp.Visible = false
-        dropesp.Center = true
-        dropesp.Outline = true
-        dropesp.Font = 3
-        dropesp.Color = Color3.fromRGB(104, 92, 67)
-        dropesp.Size = 13
-        local renderstepped
-        renderstepped = runservice.RenderStepped:Connect(function()
-            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Totem") then
-                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop.Totem.Position)
-                if drop_onscreen then
-                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
-                    dropesp.Text = "Hateful God"
-                    dropesp.Visible = true
-                else
-                    dropesp.Visible = false
-                end
-            else
-                dropesp.Visible = false
-                dropesp:Remove()
-                renderstepped:Disconnect()
+    local name = "Hateful God"
+    EspEnabled[name] = not EspEnabled[name]
+    if EspEnabled[name] then
+        hatefulgodadded = workspace.ChildAdded:Connect(function(drop)
+            if drop.Name == "Hateful God" then
+                HatefulGodEsp(drop, name)
             end
         end)
-    end
-    for i,drop in next, workspace:GetChildren() do
-        if drop.Name == "Hateful God" then
-            if drop:FindFirstChild("Totem") then
-                esp(drop)
+        for i,drop in next, workspace:GetChildren() do
+            if drop.Name == "Hateful God" then
+                task.spawn(HatefulGodEsp, drop, name)
             end
         end
+    else
+        hatefulgodadded:Disconnect()
     end
-    workspace.ChildAdded:Connect(function()
-        if drop.Name == "Hateful God" then
-            if drop:FindFirstChild("Totem") then
-                esp(drop)
-            end
-        end
-    end)
 end)
 
 VisualSection3:NewButton("Sleeping God Esp", "Sleeping God Esp", function()
-    local camera = workspace.CurrentCamera
-    local runservice = game:GetService("RunService")
-    function esp(drop)
-        local dropesp = Drawing.new("Text")
-        dropesp.Visible = false
-        dropesp.Center = true
-        dropesp.Outline = true
-        dropesp.Font = 3
-        dropesp.Color = Color3.fromRGB(104, 92, 67)
-        dropesp.Size = 13
-        local renderstepped
-        renderstepped = runservice.RenderStepped:Connect(function()
-            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Totem") then
-                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop.Totem.Position)
-                if drop_onscreen then
-                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
-                    dropesp.Text = "Sleeping God"
-                    dropesp.Visible = true
-                else
-                    dropesp.Visible = false
-                end
-            else
-                dropesp.Visible = false
-                dropesp:Remove()
-                renderstepped:Disconnect()
+    local name = "Sleeping God"
+    EspEnabled[name] = not EspEnabled[name]
+    if EspEnabled[name] then
+        sleepinggodadded = workspace.ChildAdded:Connect(function(drop)
+            if drop.Name == "Sleeping God" then
+                SleepingGodEsp(drop, name)
             end
         end)
-    end
-    for i,drop in next, workspace:GetChildren() do
-        if drop.Name == "Sleeping God" then
-            if drop:FindFirstChild("Totem") then
-                esp(drop)
+        for i,drop in next, workspace:GetChildren() do
+            if drop.Name == "Sleeping God" then
+                task.spawn(SleepingGodEsp, drop, name)
             end
         end
+    else
+        sleepinggodadded:Disconnect()
     end
-    workspace.ChildAdded:Connect(function()
-        if drop.Name == "Sleeping God" then
-            if drop:FindFirstChild("Totem") then
-                esp(drop)
-            end
-        end
-    end)
 end)
 
 VisualSection3:NewButton("Wealthy God Esp", "Wealthy God Esp", function()
-    local camera = workspace.CurrentCamera
-    local runservice = game:GetService("RunService")
-    function esp(drop)
-        local dropesp = Drawing.new("Text")
-        dropesp.Visible = false
-        dropesp.Center = true
-        dropesp.Outline = true
-        dropesp.Font = 3
-        dropesp.Color = Color3.fromRGB(104, 92, 67)
-        dropesp.Size = 13
-        local renderstepped
-        renderstepped = runservice.RenderStepped:Connect(function()
-            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Totem") then
-                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop.Totem.Position)
-                if drop_onscreen then
-                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
-                    dropesp.Text = "Wealthy God"
-                    dropesp.Visible = true
-                else
-                    dropesp.Visible = false
-                end
-            else
-                dropesp.Visible = false
-                dropesp:Remove()
-                renderstepped:Disconnect()
+    local name = "Wealthy God"
+    EspEnabled[name] = not EspEnabled[name]
+    if EspEnabled[name] then
+        wealthygodadded = workspace.ChildAdded:Connect(function(drop)
+            if drop.Name == "Wealthy God" then
+                WealthyGodEsp(drop, name)
             end
         end)
-    end
-    for i,drop in next, workspace:GetChildren() do
-        if drop.Name == "Wealthy God" then
-            if drop:FindFirstChild("Totem") then
-                esp(drop)
+        for i,drop in next, workspace:GetChildren() do
+            if drop.Name == "Wealthy God" then
+                task.spawn(WealthyGodEsp, drop, name)
             end
         end
+    else
+        wealthygodadded:Disconnect()
     end
-    workspace.ChildAdded:Connect(function()
-        if drop.Name == "Wealthy God" then
-            if drop:FindFirstChild("Totem") then
-                esp(drop)
-            end
-        end
-    end)
 end)
 
 VisualSection3:NewButton("Lonely God Esp", "Lonely God Esp", function()
-    local camera = workspace.CurrentCamera
-    local runservice = game:GetService("RunService")
-    function esp(drop)
-        local dropesp = Drawing.new("Text")
-        dropesp.Visible = false
-        dropesp.Center = true
-        dropesp.Outline = true
-        dropesp.Font = 3
-        dropesp.Color = Color3.fromRGB(104, 92, 67)
-        dropesp.Size = 13
-        local renderstepped
-        renderstepped = runservice.RenderStepped:Connect(function()
-            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Totem") then
-                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop.Totem.Position)
-                if drop_onscreen then
-                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
-                    dropesp.Text = "Lonely God"
-                    dropesp.Visible = true
-                else
-                    dropesp.Visible = false
-                end
-            else
-                dropesp.Visible = false
-                dropesp:Remove()
-                renderstepped:Disconnect()
+    local name = "Lonely God"
+    EspEnabled[name] = not EspEnabled[name]
+    if EspEnabled[name] then
+        lonelygodadded = workspace.ChildAdded:Connect(function(drop)
+            if drop.Name == "Lonely God" then
+                LonelyGodEsp(drop, name)
             end
         end)
-    end
-    for i,drop in next, workspace:GetChildren() do
-        if drop.Name == "Lonely God" then
-            if drop:FindFirstChild("Totem") then
-                esp(drop)
+        for i,drop in next, workspace:GetChildren() do
+            if drop.Name == "Lonely God" then
+                task.spawn(LonelyGodEsp, drop, name)
             end
         end
+    else
+        lonelygodadded:Disconnect()
     end
-    workspace.ChildAdded:Connect(function()
-        if drop.Name == "Lonely God" then
-            if drop:FindFirstChild("Totem") then
-                esp(drop)
-            end
-        end
-    end)
 end)
 
 VisualSection3:NewButton("Miserable God Esp", "Miserable God Esp", function()
-    local camera = workspace.CurrentCamera
-    local runservice = game:GetService("RunService")
-    function esp(drop)
-        local dropesp = Drawing.new("Text")
-        dropesp.Visible = false
-        dropesp.Center = true
-        dropesp.Outline = true
-        dropesp.Font = 3
-        dropesp.Color = Color3.fromRGB(104, 92, 67)
-        dropesp.Size = 13
-        local renderstepped
-        renderstepped = runservice.RenderStepped:Connect(function()
-            if drop and workspace:FindFirstChild(drop.Name) and drop:FindFirstChild("Totem") then
-                local drop_pos, drop_onscreen = camera:WorldToViewportPoint(drop.Totem.Position)
-                if drop_onscreen then
-                    dropesp.Position = Vector2.new(drop_pos.X, drop_pos.Y)
-                    dropesp.Text = "Miserable God"
-                    dropesp.Visible = true
-                else
-                    dropesp.Visible = false
-                end
-            else
-                dropesp.Visible = false
-                dropesp:Remove()
-                renderstepped:Disconnect()
+    local name = "Miserable God"
+    EspEnabled[name] = not EspEnabled[name]
+    if EspEnabled[name] then
+        miserablegodadded = workspace.ChildAdded:Connect(function(drop)
+            if drop.Name == "Miserable God" then
+                MiserableGodEsp(drop, name)
             end
         end)
-    end
-    for i,drop in next, workspace:GetChildren() do
-        if drop.Name == "Miserable God" then
-            if drop:FindFirstChild("Totem") then
-                esp(drop)
+        for i,drop in next, workspace:GetChildren() do
+            if drop.Name == "Miserable God" then
+                task.spawn(MiserableGodEsp, drop, name)
             end
         end
+    else
+        miserablegodadded:Disconnect()
     end
-    workspace.ChildAdded:Connect(function()
-        if drop.Name == "Miserable God" then
-            if drop:FindFirstChild("Totem") then
-                esp(drop)
-            end
-        end
-    end)
 end)
 
 --MiscSection
@@ -655,6 +726,7 @@ end)
 ChangelogSection:NewLabel("1.0.0 | Esp, Gui Changes")
 ChangelogSection:NewLabel("1.0.2 | Rebind Key To B (Bc Void Is V)")
 ChangelogSection:NewLabel("1.0.3 | Fixed Childadded, Iron Esp")
+ChangelogSection:NewLabel("1.0.4 | Esp Rewrite, On/Off Feature")
 
 --SettingSection
 SettingSection:NewKeybind("Toggle Gui", "Toggles Gui", Enum.KeyCode.B, function()
